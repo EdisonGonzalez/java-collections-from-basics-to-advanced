@@ -17,19 +17,36 @@ public class ParallelStreamsDemo {
             eList.add(new Employee("Krishna",50000));
         }
 
-        //Sequential processing
+        // Sequential processing
         time1 = System.currentTimeMillis();
-        System.out.println("Sequential Stream Count = "+eList.stream().filter(e -> e.getSalary() > 1000).count());
+        System.out.println("Sequential Stream Count = " + eList.stream().filter(e -> e.getSalary() > 1000).count());
         time2 = System.currentTimeMillis();
-        System.out.println("Sequential Stream Time Taken = "+(time2 - time1)+"\n");
+        System.out.println("Sequential Stream Time Taken = " + (time2 - time1) + "ms" + "\n");
 
-
-        //parallel processing
+        /**
+         * REMEMBER:
+         *
+         * In this example its possible processing in parallel way because the problem complies with being:
+         *
+         *    1. STATELESS : State of one element does nopt affect another element.
+         *    2. NON-INTERFERING: Data source is not affected while operation.
+         *    3. ASSOCIATIVE: One operation result is not affected by the order of data under processing.
+         */
+        // Parallel processing - way 1 - parallelStream()
         time1 = System.currentTimeMillis();
-        System.out.println("Parallel Stream Count = "+eList.parallelStream().filter(e -> e.getSalary() > 1000).count());
+        System.out.println("Parallel Stream Count with parallelStream() = " + eList.parallelStream().filter(e -> e.getSalary() > 1000).count());
         time2 = System.currentTimeMillis();
-        System.out.println("Time taken by Parallel processing: "+(time2-time1));
+        System.out.println("Time taken by Parallel processing (parallelStream()): " + (time2-time1) + "ms" + "\n");
 
+        // Parallel processing - way 2 - stream().parallel()
+        time1 = System.currentTimeMillis();
+        System.out.println("Parallel Stream Count with stream().parallel() = " + eList.stream().parallel().filter(e -> e.getSalary() > 1000).count());
+        time2 = System.currentTimeMillis();
+        System.out.println("Time taken by Parallel processing (stream().parallel()): " + (time2-time1) + "ms" + "\n");
 
+        /**
+         * NOTE: Check if you change the order between parallelStream() and stream().parallel()
+         * the last one will always mark the best time record
+         */
     }
 }

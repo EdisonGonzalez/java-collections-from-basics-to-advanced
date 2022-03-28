@@ -15,5 +15,5 @@ class Student{
 }
 
 interface Details{
-    public Student getStudent(String name);
+    Student getStudent(String name);
 }
